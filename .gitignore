@@ -1,0 +1,60 @@
+# Dependencies
+node_modules/
+
+# Production build
+dist/
+build/
+
+# Python virtual environments
+.venv/
+venv/
+env/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# API credentials and tokens
+credentials.json
+token.json
+*credentials*
+*token*
+
+# IDE and editor files
+.vscode/
+.idea/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Testing and coverage
+.coverage
+htmlcov/
+.pytest_cache/
+.coverage.*
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*.swo
+# Python local cache
+*.pyc
+*.pyo
+
+# Local development files
+*.local
