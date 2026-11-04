@@ -1,32 +1,35 @@
-export default async function handler(request: Request): Promise<Response> {
-  const incomingUrl = new URL(
-  request.url,
-  `https://${request.headers.get("host") || "localhost"}`
-);
+import type { VercelRequest, VercelResponse } from "@vercel/node";
+
+export default async function handler(
+  request: VercelRequest,
+  response: VercelResponse
+) {
   const upstreamUrl = new URL("https://himalayas.app/jobs/api/search");
 
   for (const key of ["q", "country", "worldwide", "page"]) {
-    const value = incomingUrl.searchParams.get(key);
-    if (value !== null) {
+    const value = request.query[key];
+
+    if (typeof value === "string") {
       upstreamUrl.searchParams.set(key, value);
     }
   }
 
   try {
-    const response = await fetch(upstreamUrl);
-    const body = await response.text();
+    const apiResponse = await fetch(upstreamUrl);
+    const data = await apiResponse.text();
 
-    return new Response(body, {
-      status: response.status,
-      headers: {
-        "Content-Type": response.headers.get("Content-Type") || "application/json",
-        "Cache-Control": "s-maxage=300, stale-while-revalidate=600",
-      },
+    return response
+      .status(apiResponse.status)
+      .setHeader(
+        "Content-Type",
+        apiResponse.headers.get("Content-Type") || "application/json"
+      )
+      .send(data);
+  } catch (error) {
+    console.error("Himalayas API error:", error);
+
+    return response.status(502).json({
+      error: "Unable to retrieve jobs from Himalayas.",
     });
-  } catch {
-    return Response.json(
-      { error: "Unable to retrieve jobs from Himalayas." },
-      { status: 502 }
-    );
   }
 }
