@@ -15,10 +15,7 @@ app.add_middleware(
 model = None
 
 
-@app.on_event("startup")
-def load_model():
-    global model
-    model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
+
 
 
 @app.get("/")
@@ -36,8 +33,10 @@ def health():
 
 @app.post("/compare")
 def compare_texts(data: dict):
+    global model
+
     if model is None:
-        return {"error": "Matching model is not loaded"}
+        model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
 
     resume_text = data.get("resume_text", "").strip()
     job_text = data.get("job_text", "").strip()
