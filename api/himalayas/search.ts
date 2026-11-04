@@ -1,5 +1,8 @@
 export default async function handler(request: Request): Promise<Response> {
-  const incomingUrl = new URL(request.url);
+  const incomingUrl = new URL(
+  request.url,
+  `https://${request.headers.get("host") || "localhost"}`
+);
   const upstreamUrl = new URL("https://himalayas.app/jobs/api/search");
 
   for (const key of ["q", "country", "worldwide", "page"]) {
