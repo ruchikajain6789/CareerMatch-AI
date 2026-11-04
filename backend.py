@@ -36,7 +36,7 @@ def compare_texts(data: dict):
     global model
 
     if model is None:
-        model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
+        model = SentenceTransformer("sentence-transformers/paraphrase-MiniLM-L3-v2")
 
     resume_text = data.get("resume_text", "").strip()
     job_text = data.get("job_text", "").strip()
